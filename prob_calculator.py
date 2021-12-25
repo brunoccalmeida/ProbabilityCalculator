@@ -26,34 +26,38 @@ class Hat:
 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
-    times_expected_balls_in_draw = 0
-    hat_draw = copy.copy(hat.draw(num_balls_drawn))
-    # print(hat_draw)
-    # print(expected_balls)
-    print(hat.contents)
-    # for i in range(num_experiments):
-    #     for element in hat_draw:
-    #         print(element)
 
-    #         if element not in hat_draw:
-    #             all_elements_in = False
-    #         else:
-    #             all_elements_in = True
-    #     if all_elements_in:
-    #         times_expected_balls_in_draw += 1
-    #
-    # return times_expected_balls_in_draw/num_experiments
+    hat_contents = copy.deepcopy(hat)
+    hat_draw = copy.deepcopy(hat.draw(num_balls_drawn))
+    expected_balls_dict = copy.deepcopy(expected_balls)
+    for k, v in expected_balls_dict.items():
+        expected_balls_dict[k] = 0
+    print(hat_draw)
+
+    for element in hat_draw:
+        try:
+            expected_balls_dict[element] += 1
+        except:
+            continue
+    print(expected_balls_dict)
+    print(expected_balls)
+    count = 0
+    for k, v in expected_balls_dict.items() and expected_balls.items():
+        if expected_balls_dict[k] >= expected_balls[k]:
+            count += 1
+
+    return count/num_experiments
 
 
 if __name__ == '__main__':
-    hat1 = Hat(yellow=2, blue=2, green=2)
+    hat1 = Hat(yellow=4, blue=3, green=5)
     hat2 = Hat(red=5, orange=4)
     hat3 = Hat(red=5, orange=4, black=1, blue=0, pink=2, striped=9)
     hat4 = Hat(red=1)
     print(experiment(hat=hat1,
-                     expected_balls={"yellow": 3, "green": 1},
+                     expected_balls={"yellow": 2, "green": 1},
                      num_balls_drawn=5,
-                     num_experiments=1))
+                     num_experiments=2000))
     # print(hat1.__dict__)
     # print(hat2.__dict__)
     # print(hat3.__dict__)
