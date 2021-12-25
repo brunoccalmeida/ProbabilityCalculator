@@ -26,38 +26,51 @@ class Hat:
 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
-
-    hat_contents = copy.deepcopy(hat)
-    hat_draw = copy.deepcopy(hat.draw(num_balls_drawn))
-    expected_balls_dict = copy.deepcopy(expected_balls)
-    for k, v in expected_balls_dict.items():
-        expected_balls_dict[k] = 0
-    print(hat_draw)
-
-    for element in hat_draw:
-        try:
-            expected_balls_dict[element] += 1
-        except:
-            continue
-    print(expected_balls_dict)
-    print(expected_balls)
     count = 0
-    for k, v in expected_balls_dict.items() and expected_balls.items():
-        if expected_balls_dict[k] >= expected_balls[k]:
-            count += 1
+
+    for c in range(num_experiments):
+        hat_contents = copy.deepcopy(hat)
+        hat_draw = copy.deepcopy(hat).draw(num_balls_drawn)
+        balls_draw_dict = copy.deepcopy(expected_balls)
+        expected_balls_dict = copy.deepcopy(expected_balls)
+        for k, v in expected_balls_dict.items():
+            balls_draw_dict[k] = 0
+
+        for element in copy.deepcopy(hat_draw):
+            try:
+                balls_draw_dict[element] += 1
+            except KeyError:
+                continue
+
+        #  Goes through the expected values e verifies if they are present on the balls draw
+        n = 0
+        for k, v in expected_balls_dict.items():
+            if n == 0:
+                if balls_draw_dict[k] >= v:
+                    n += 1
+                    value1 = True
+                else:
+                    n += 1
+                    value1 = False
+            elif n == 1:
+                if balls_draw_dict[k] >= v:
+                    n += 1
+                    value2 = True
+                else:
+                    n += 1
+                    value2 = False
+                if value2 == value1:
+                    count += 1
 
     return count/num_experiments
 
 
 if __name__ == '__main__':
-    hat1 = Hat(yellow=4, blue=3, green=5)
+    hat1 = Hat(blue=3,red=2,green=6)
     hat2 = Hat(red=5, orange=4)
     hat3 = Hat(red=5, orange=4, black=1, blue=0, pink=2, striped=9)
     hat4 = Hat(red=1)
-    print(experiment(hat=hat1,
-                     expected_balls={"yellow": 2, "green": 1},
-                     num_balls_drawn=5,
-                     num_experiments=2000))
+    print(experiment(hat=hat1, expected_balls={"blue": 2,"green": 1}, num_balls_drawn=4, num_experiments=20))
     # print(hat1.__dict__)
     # print(hat2.__dict__)
     # print(hat3.__dict__)
